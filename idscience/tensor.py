@@ -3,7 +3,7 @@ from functools import reduce
 import operator
 import random as _random
 
-from idscience.variable import InterChars, null
+from idscience.values import InterChars, null
 
 
 class Tensor:
