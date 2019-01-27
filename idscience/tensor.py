@@ -25,8 +25,7 @@ class Tensor:
         return self._shape
 
     def reshape(x, *shape):
-        if not isinstance(x, Tensor):
-            x = tensor(x)
+        x = tensor(x)
         axes = [i for i, num in enumerate(shape) if (num == -1 or num is None)]
         if len(axes) > 1:
             raise ValueError('can only specify one unknown dimension')
@@ -40,8 +39,7 @@ class Tensor:
         return Tensor(array, shape)
 
     def transpose(x, *axes):
-        if not isinstance(x, Tensor):
-            x = tensor(x)
+        x = tensor(x)
         if len(axes) != len(x.shape):
             raise ValueError("axes don't match tensor")
         if len(set(axes)) != len(axes):
@@ -115,7 +113,7 @@ class Tensor:
 
     def __setitem__(self, idxs, value):
         idxs, _ = Tensor.recursion_element(range(self.size), self._shape, idxs)
-        value = value if isinstance(value, Tensor) else tensor(value)
+        value = tensor(value)
         value_size = value.size
         for i, idx in enumerate(idxs):
             self._array[idx] = value._array[i % value_size]
@@ -135,8 +133,7 @@ class Tensor:
             raise StopIteration
 
     def tolist(x):
-        if not isinstance(x, Tensor):
-            x = tensor(x)
+        x = tensor(x)
         if len(x.shape) == 0:
             return x._array[:]
         def recursion_items(array, shape):
@@ -152,8 +149,7 @@ class Tensor:
         return recursion_items(x._array, x.shape)
 
     def item(x):
-        if not isinstance(x, Tensor):
-            x = tensor(x)
+        x = tensor(x)
         if x.size != 1:
             raise ValueError('can only convert an array of size 1 to a Python scalar')
         return x._array[0]
@@ -241,20 +237,18 @@ class Tensor:
 
     @staticmethod
     def operator_tensor(x, opt):
-        if not isinstance(x, Tensor):
-            x = tensor(x)
+        x = tensor(x)
         array = [0] * x.size
         shape = x.shape
         for i, value in enumerate(x._array):
             array[i] = opt(value)
+        if len(shape) == 0: return array[0]
         return Tensor(array, shape)
 
     @staticmethod
     def operator_tensor2tensor(x1, x2, opt):
-        if not isinstance(x1, Tensor):
-            x1 = tensor(x1)
-        if not isinstance(x2, Tensor):
-            x2 = tensor(x2)
+        x1 = tensor(x1)
+        x2 = tensor(x2)
 
         shape1 = x1.shape
         m = x1.size
@@ -274,14 +268,13 @@ class Tensor:
             array[i] = opt(array1[k1], array2[k2])
             k1 = (k1 + 1) % m
             k2 = (k2 + 1) % n
+        if len(shape) == 0: return array[0]
         return Tensor(array, shape)
 
     @staticmethod
     def matmul(x1, x2):
-        if not isinstance(x1, Tensor):
-            x1 = tensor(x1)
-        if not isinstance(x2, Tensor):
-            x2 = tensor(x2)
+        x1 = tensor(x1)
+        x2 = tensor(x2)
         if len(x1.shape) == 0 or len(x2.shape) == 0:
             raise ValueError("Scalar operands are not allowed, use '*' instead")
 
@@ -388,8 +381,7 @@ class Tensor:
     __imatmul__ = lambda x1, x2: Tensor.matmul(x1, x2)
 
     def __contains__(self, obj):
-        if not isinstance(obj, Tensor):
-            obj = tensor(obj)
+        obj = tensor(obj)
         size1 = self.size
         size2 = obj.size
         if size1 < size2 or size1 % size2 != 0:
@@ -403,8 +395,7 @@ class Tensor:
         return False
 
     def sum(x, axis=None, keepdims=False):
-        if not isinstance(x, Tensor):
-            x = tensor(x)
+        x = tensor(x)
         dst_shape = None
         dst_array = None
         if axis is None:
@@ -441,8 +432,7 @@ class Tensor:
         raise TypeError('tuple indices must be integers, not {}'.format(axis.__class__))
 
     def mean(x, axis=None, keepdims=False):
-        if not isinstance(x, Tensor):
-            x = tensor(x)
+        x = tensor(x)
         s = Tensor.sum(x, axis=axis, keepdims=keepdims)
         n = x.size
         if isinstance(s, Tensor):
@@ -450,8 +440,7 @@ class Tensor:
         return s / n
 
     def std(x, axis=None, keepdims=False):
-        if not isinstance(x, Tensor):
-            x = tensor(x)
+        x = tensor(x)
         sum_square = Tensor.sum(x**2, axis=axis, keepdims=keepdims)
         n = x.size
         if isinstance(sum_square, Tensor):
@@ -474,8 +463,12 @@ def value_flatten(value, shape):
     return value
 
 def tensor(value):
-    shape = value_shape(value)
-    array = value_flatten(value, shape)
+    if isinstance(value, Tensor):
+        shape = value.shape
+        array = list(value._array)
+    else:
+        shape = value_shape(value)
+        array = value_flatten(value, shape)
     return Tensor(array, shape)
 
 def zeros(shape):
@@ -611,8 +604,7 @@ def concatenate(xs, axis=0):
     first_shape = None
     after_shape = None
     for i, x in enumerate(xs):
-        if not isinstance(x, Tensor):
-            xs[i] = tensor(x)
+        xs[i] = tensor(x)
         if i == 0:
             dims = len(x.shape)
             first_shape = x.shape[:axis]
