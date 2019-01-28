@@ -1,2 +1,2 @@
 # idscience
-Intelligent data science toolkit（use pypy）
+Intelligent data science toolkit（use pypy3.5+）

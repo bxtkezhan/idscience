@@ -236,17 +236,17 @@ class Tensor:
             return 'tensor(\n{}, shape: {})'.format(self, self.shape)
 
     @staticmethod
-    def operator_tensor(x, opt):
+    def map_tensor(x, func):
         x = tensor(x)
         array = [0] * x.size
         shape = x.shape
         for i, value in enumerate(x._array):
-            array[i] = opt(value)
+            array[i] = func(value)
         if len(shape) == 0: return array[0]
         return Tensor(array, shape)
 
     @staticmethod
-    def operator_tensor2tensor(x1, x2, opt):
+    def map_tensor2tensor(x1, x2, func):
         x1 = tensor(x1)
         x2 = tensor(x2)
 
@@ -265,13 +265,12 @@ class Tensor:
         k1 = 0
         k2 = 0
         for i in range(l):
-            array[i] = opt(array1[k1], array2[k2])
+            array[i] = func(array1[k1], array2[k2])
             k1 = (k1 + 1) % m
             k2 = (k2 + 1) % n
         if len(shape) == 0: return array[0]
         return Tensor(array, shape)
 
-    @staticmethod
     def matmul(x1, x2):
         x1 = tensor(x1)
         x2 = tensor(x2)
@@ -316,93 +315,98 @@ class Tensor:
             array[idx] = value
         return Tensor(array, shape)
 
-    __inv__ = lambda x: Tensor.operator_tensor(x, operator.inv)
+    __inv__ = lambda x: Tensor.map_tensor(x, operator.inv)
 
-    __pos__ = lambda x: Tensor.operator_tensor(x, operator.pos)
-    __neg__ = lambda x: Tensor.operator_tensor(x, operator.neg)
-    __abs__ = lambda x: Tensor.operator_tensor(x, operator.abs)
+    __pos__ = lambda x: Tensor.map_tensor(x, operator.pos)
+    __neg__ = lambda x: Tensor.map_tensor(x, operator.neg)
+    __abs__ = lambda x: Tensor.map_tensor(x, operator.abs)
 
-    __lt__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.lt)
-    __le__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.le)
-    __eq__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.eq)
-    __ge__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.ge)
-    __gt__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.gt)
+    __lt__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.lt)
+    __le__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.le)
+    __eq__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.eq)
+    __ge__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.ge)
+    __gt__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.gt)
 
-    __and__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.and_)
-    __rand__ = lambda x1, x2: Tensor.operator_tensor2tensor(x2, x1, operator.and_)
+    __and__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.and_)
+    __rand__ = lambda x1, x2: Tensor.map_tensor2tensor(x2, x1, operator.and_)
 
-    __or__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.or_)
-    __ror__ = lambda x1, x2: Tensor.operator_tensor2tensor(x2, x1, operator.or_)
+    __or__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.or_)
+    __ror__ = lambda x1, x2: Tensor.map_tensor2tensor(x2, x1, operator.or_)
 
-    __xor__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.xor)
-    __rxor__ = lambda x1, x2: Tensor.operator_tensor2tensor(x2, x1, operator.xor)
+    __xor__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.xor)
+    __rxor__ = lambda x1, x2: Tensor.map_tensor2tensor(x2, x1, operator.xor)
 
-    __lshift__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.lshift)
-    __rshift__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.rshift)
+    __lshift__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.lshift)
+    __rshift__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.rshift)
 
-    __lshift__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.lshift)
+    __lshift__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.lshift)
 
-    __add__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.add)
-    __radd__ = lambda x1, x2: Tensor.operator_tensor2tensor(x2, x1, operator.add)
+    __add__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.add)
+    __radd__ = lambda x1, x2: Tensor.map_tensor2tensor(x2, x1, operator.add)
 
-    __sub__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.sub)
-    __rsub__ = lambda x1, x2: Tensor.operator_tensor2tensor(x2, x1, operator.sub)
+    __sub__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.sub)
+    __rsub__ = lambda x1, x2: Tensor.map_tensor2tensor(x2, x1, operator.sub)
 
-    __mul__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.mul)
-    __rmul__ = lambda x1, x2: Tensor.operator_tensor2tensor(x2, x1, operator.mul)
+    __mul__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.mul)
+    __rmul__ = lambda x1, x2: Tensor.map_tensor2tensor(x2, x1, operator.mul)
 
-    __truediv__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.truediv)
-    __rtruediv__ = lambda x1, x2: Tensor.operator_tensor2tensor(x2, x1, operator.truediv)
+    __truediv__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.truediv)
+    __rtruediv__ = lambda x1, x2: Tensor.map_tensor2tensor(x2, x1, operator.truediv)
 
-    __floordiv__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.floordiv)
-    __rfloordiv__ = lambda x1, x2: Tensor.operator_tensor2tensor(x2, x1, operator.floordiv)
+    __floordiv__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.floordiv)
+    __rfloordiv__ = lambda x1, x2: Tensor.map_tensor2tensor(x2, x1, operator.floordiv)
 
-    __pow__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.pow)
-    __rpow__ = lambda x1, x2: Tensor.operator_tensor2tensor(x2, x1, operator.pow)
+    __pow__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.pow)
+    __rpow__ = lambda x1, x2: Tensor.map_tensor2tensor(x2, x1, operator.pow)
 
-    __mod__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.mod)
-    __rmod__ = lambda x1, x2: Tensor.operator_tensor2tensor(x2, x1, operator.mod)
+    __mod__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.mod)
+    __rmod__ = lambda x1, x2: Tensor.map_tensor2tensor(x2, x1, operator.mod)
 
     __matmul__ = lambda x1, x2: Tensor.matmul(x1, x2)
     __rmatmul__ = lambda x1, x2: Tensor.matmul(x2, x1)
 
-    __iand__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.iand)
-    __ior__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.ior)
-    __ixor__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.ixor)
-    __ilshift__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.ilshift)
-    __irshift__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.irshift)
-    __iadd__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.iadd)
-    __isub__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.isub)
-    __imul__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.imul)
-    __itruediv__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.itruediv)
-    __ifloordiv__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.ifloordiv)
-    __ipow__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.ipow)
-    __imod__ = lambda x1, x2: Tensor.operator_tensor2tensor(x1, x2, operator.imod)
+    __iand__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.iand)
+    __ior__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.ior)
+    __ixor__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.ixor)
+    __ilshift__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.ilshift)
+    __irshift__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.irshift)
+    __iadd__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.iadd)
+    __isub__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.isub)
+    __imul__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.imul)
+    __itruediv__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.itruediv)
+    __ifloordiv__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.ifloordiv)
+    __ipow__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.ipow)
+    __imod__ = lambda x1, x2: Tensor.map_tensor2tensor(x1, x2, operator.imod)
     __imatmul__ = lambda x1, x2: Tensor.matmul(x1, x2)
 
-    def __contains__(self, obj):
-        obj = tensor(obj)
+    def __contains__(self, x):
+        x = tensor(x)
         size1 = self.size
-        size2 = obj.size
+        size2 = x.size
         if size1 < size2 or size1 % size2 != 0:
             return False
         array1 = self._array
-        array2 = obj._array
+        array2 = x._array
         steps = size1 // size2
         for step in range(steps):
             if array1[step * size2: (step + 1) * size2] == array2:
                 return True
         return False
 
-    def sum(x, axis=None, keepdims=False):
+    @staticmethod
+    def reduce_tensor(x, func, axis=None, keepdims=False):
         x = tensor(x)
         dst_shape = None
         dst_array = None
         if axis is None:
+            dst_value = x._array[0]
+            array = x._array[1:]
+            for value in array:
+                dst_value = func(dst_value, value)
             if not keepdims:
-                return sum(x._array)
+                return dst_value
+            dst_array = [dst_value]
             dst_shape = [1 for axes in x.shape]
-            dst_array = [sum(x._array)]
             dst_shape = [axes for axes in dst_shape if axes > 1]
             return Tensor(dst_array, dst_shape)
         if isinstance(axis, int):
@@ -425,11 +429,15 @@ class Tensor:
                 for base, dst_base, axes in trans_bases:
                     dst_idx += i // base % axes * dst_base
                     i %= base
-                dst_array[dst_idx] += value
+                dst_value = dst_array[dst_idx]
+                dst_array[dst_idx] = func(dst_value, value)
             if not keepdims:
                 dst_shape = [axes for axes in dst_shape if axes > 1]
             return Tensor(dst_array, dst_shape)
         raise TypeError('tuple indices must be integers, not {}'.format(axis.__class__))
+
+    def sum(x, axis=None, keepdims=False):
+        return Tensor.reduce_tensor(x, operator.add, axis=axis, keepdims=keepdims)
 
     def mean(x, axis=None, keepdims=False):
         x = tensor(x)
@@ -447,6 +455,14 @@ class Tensor:
             n /= sum_square.size
         square_mean = Tensor.mean(x, axis=axis, keepdims=keepdims)**2
         return (sum_square / n - square_mean)**0.5
+
+    def min(x, axis=None, keepdims=False):
+        func = lambda a, b: a if a < b else b
+        return Tensor.reduce_tensor(x, func, axis=axis, keepdims=keepdims)
+
+    def max(x, axis=None, keepdims=False):
+        func = lambda a, b: a if a > b else b
+        return Tensor.reduce_tensor(x, func, axis=axis, keepdims=keepdims)
 
 def value_shape(value):
     if not isinstance(value, Iterable)  or isinstance(value, str):

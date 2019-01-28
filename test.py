@@ -151,7 +151,7 @@ def functional():
     print(ids.functional.chisq_test(dset4))
     print(ids.functional.chisq_test(dset5))
 
-    ms = ids.randint(-5, 5, (3, 4, 4))
+    ms = ids.randint(-5, 5, (5, 5))
     ms_inv = ids.functional.matrix_inv(ms)
     print('ms:')
     print(ms)

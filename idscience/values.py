@@ -11,5 +11,11 @@ class Null:
         return obj
     __radd__ = __add__
     __iadd__ = __add__
+    def __lt__(self, obj):
+        return False
+    __le__ = __lt__
+    __eq__ = __lt__
+    __ge__ = __lt__
+    __gt__ = __lt__
 
 null = Null()

@@ -9,140 +9,140 @@ from idscience import Tensor, tensor, zeros_like, vstack, random, concatenate
 
 
 def ceil(x):
-    return Tensor.operator_tensor(x, _math.ceil)
+    return Tensor.map_tensor(x, _math.ceil)
 
 def copysign(x, y):
-    return Tensor.operator_tensor2tensor(x, y, _math.copysign)
+    return Tensor.map_tensor2tensor(x, y, _math.copysign)
 
 def fabs(x):
-    return Tensor.operator_tensor(x, _math.fabs)
+    return Tensor.map_tensor(x, _math.fabs)
 
 def factorial(x):
-    return Tensor.operator_tensor(x, _math.factorial)
+    return Tensor.map_tensor(x, _math.factorial)
 
 def floor(x):
-    return Tensor.operator_tensor(x, _math.floor)
+    return Tensor.map_tensor(x, _math.floor)
 
 def fmod(x, y):
-    return Tensor.operator_tensor2tensor(x, y, _math.fmod)
+    return Tensor.map_tensor2tensor(x, y, _math.fmod)
 
 def frexp(x):
-    return Tensor.operator_tensor(x, _math.frexp)
+    return Tensor.map_tensor(x, _math.frexp)
 
 def gcd(a, b):
-    return Tensor.operator_tensor2tensor(a, b, _math.gcd)
+    return Tensor.map_tensor2tensor(a, b, _math.gcd)
 
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
     _isclose = lambda a, b: _math.isclose(a, b, rel_tol=1e-09, abs_tol=0.0)
-    return Tensor.operator_tensor2tensor(a, b, _isclose)
+    return Tensor.map_tensor2tensor(a, b, _isclose)
 
 def isfinite(x):
-    return Tensor.operator_tensor(x, _math.isfinite)
+    return Tensor.map_tensor(x, _math.isfinite)
 
 def isinf(x):
-    return Tensor.operator_tensor(x, _math.isinf)
+    return Tensor.map_tensor(x, _math.isinf)
 
 def isnan(x):
-    return Tensor.operator_tensor(x, _math.isnan)
+    return Tensor.map_tensor(x, _math.isnan)
 
 def ldexp(x, i):
-    return Tensor.operator_tensor2tensor(x, i, _math.ldexp)
+    return Tensor.map_tensor2tensor(x, i, _math.ldexp)
 
 def modf(x):
-    return Tensor.operator_tensor(x, _math.modf)
+    return Tensor.map_tensor(x, _math.modf)
 
 def remainder(x, y):
-    return Tensor.operator_tensor2tensor(x, y)
+    return Tensor.map_tensor2tensor(x, y)
 
 def trunc(x):
-    return Tensor.operator_tensor(x, _math.trunc)
+    return Tensor.map_tensor(x, _math.trunc)
 
 def exp(x):
-    return Tensor.operator_tensor(x, _math.exp)
+    return Tensor.map_tensor(x, _math.exp)
 
 def expm1(x):
-    return Tensor.operator_tensor(x, _math.expm1)
+    return Tensor.map_tensor(x, _math.expm1)
 
 def log(x, base):
-    return Tensor.operator_tensor2tensor(x, base, _math.log)
+    return Tensor.map_tensor2tensor(x, base, _math.log)
 
 def log1p(x):
-    return Tensor.operator_tensor(x, _math.log1p)
+    return Tensor.map_tensor(x, _math.log1p)
 
 def log2(x):
-    return Tensor.operator_tensor(x, _math.log2)
+    return Tensor.map_tensor(x, _math.log2)
 
 def log10(x):
-    return Tensor.operator_tensor(x, _math.log10)
+    return Tensor.map_tensor(x, _math.log10)
 
 def pow(x, y):
-    return Tensor.operator_tensor2tensor(x, y, _math.pow)
+    return Tensor.map_tensor2tensor(x, y, _math.pow)
 
 def square(x):
     return pow(x, 2)
 
 def sqrt(x):
-    return Tensor.operator_tensor(x, _math.sqrt)
+    return Tensor.map_tensor(x, _math.sqrt)
 
 def acos(x):
-    return Tensor.operator_tensor(x, _math.acos)
+    return Tensor.map_tensor(x, _math.acos)
 
 def asin(x):
-    return Tensor.operator_tensor(x, _math.asin)
+    return Tensor.map_tensor(x, _math.asin)
 
 def atan(x):
-    return Tensor.operator_tensor(x, _math.atan)
+    return Tensor.map_tensor(x, _math.atan)
 
 def atan2(x, y):
-    return Tensor.operator_tensor2tensor(x, y, _math.atan2)
+    return Tensor.map_tensor2tensor(x, y, _math.atan2)
 
 def cos(x):
-    return Tensor.operator_tensor(x, _math.cos)
+    return Tensor.map_tensor(x, _math.cos)
 
 def hypot(x, y):
-    return Tensor.operator_tensor2tensor(x, y, _math.hypot)
+    return Tensor.map_tensor2tensor(x, y, _math.hypot)
 
 def sin(x):
-    return Tensor.operator_tensor(x, _math.sin)
+    return Tensor.map_tensor(x, _math.sin)
 
 def tan(x):
-    return Tensor.operator_tensor(x, _math.tan)
+    return Tensor.map_tensor(x, _math.tan)
 
 def degrees(x):
-    return Tensor.operator_tensor(x, _math.degrees)
+    return Tensor.map_tensor(x, _math.degrees)
 
 def radians(x):
-    return Tensor.operator_tensor(x, _math.radians)
+    return Tensor.map_tensor(x, _math.radians)
 
 def acosh(x):
-    return Tensor.operator_tensor(x, _math.acosh)
+    return Tensor.map_tensor(x, _math.acosh)
 
 def asinh(x):
-    return Tensor.operator_tensor(x, _math.asinh)
+    return Tensor.map_tensor(x, _math.asinh)
 
 def atanh(x):
-    return Tensor.operator_tensor(x, _math.atanh)
+    return Tensor.map_tensor(x, _math.atanh)
 
 def cosh(x):
-    return Tensor.operator_tensor(x, _math.cosh)
+    return Tensor.map_tensor(x, _math.cosh)
 
 def sinh(x):
-    return Tensor.operator_tensor(x, _math.sinh)
+    return Tensor.map_tensor(x, _math.sinh)
 
 def tanh(x):
-    return Tensor.operator_tensor(x, _math.tanh)
+    return Tensor.map_tensor(x, _math.tanh)
 
 def erf(x):
-    return Tensor.operator_tensor(x, _math.erf)
+    return Tensor.map_tensor(x, _math.erf)
 
 def erfc(x):
-    return Tensor.operator_tensor(x, _math.erfc)
+    return Tensor.map_tensor(x, _math.erfc)
 
 def gamma(x):
-    return Tensor.operator_tensor(x, _math.gamma)
+    return Tensor.map_tensor(x, _math.gamma)
 
 def lgamma(x):
-    return Tensor.operator_tensor(x, _math.lgamma)
+    return Tensor.map_tensor(x, _math.lgamma)
 
 pi = _math.pi
 e = _math.e
@@ -151,7 +151,7 @@ inf = _math.inf
 nan = _math.nan
 
 def round(x, ndigits=None):
-    return Tensor.operator_tensor2tensor(x, ndigits, _builtins.round)
+    return Tensor.map_tensor2tensor(x, ndigits, _builtins.round)
 
 def sample(x, weights=None, *, cum_weights=None, size=1):
     random = _random.random
@@ -281,42 +281,29 @@ def chisq_test(x, correct=True):
     if len(x.shape) == 1:
         distance = chi2_uniform_distance(x)
         df = len(x) - 1
-        prob = float(chi2_probability(df, distance))
+        prob = chi2_probability(df, distance)
         return distance, df, prob
     elif len(x.shape) == 2:
         distance = chi2_uniform2d_distance(x, correct)
         df = (x.shape[0] - 1) * (x.shape[1] - 1)
-        prob = float(chi2_probability(df, distance))
+        prob = chi2_probability(df, distance)
         return distance, df, prob
     raise ValueError('Only support vector or matrix')
 
-def matrix_inv(x, eps=1e-7):
-    def _matrix_inv(m):
-        Q, R = qr(m)
-        I = eye(*R.shape)
-        A = concatenate([R, I], axis=-1)
-        m, n = A.shape
-        for i in range(m):
-            a = A[i, i]
-            if abs(a) > eps:
-                A[i] /= a
-        for r in range(m):
-            for c in range(r + 1, m):
-                A[r] -= A[r, c] * A[c]
-        invR = A[:, m:]
-        return invR @ Q.T
-
-    x = tensor(x)
-    if len(x.shape) <= 2:
-        x_inv = _matrix_inv(x)
-    else:
-        src_shape = x.shape
-        dst_shape = src_shape[:-2] + src_shape[-2:][::-1]
-        ms = x.reshape(-1, src_shape[-2], src_shape[-1])
-        for i, m in enumerate(ms):
-            ms[i] = _matrix_inv(m)
-        x_inv = ms.reshape(*dst_shape)
-    return x_inv
+def matrix_inv(A, eps=1e-7):
+    Q, R = qr(A)
+    I = eye(*R.shape)
+    A = concatenate([R, I], axis=-1)
+    m, n = A.shape
+    for i in range(m):
+        a = A[i, i]
+        if abs(a) > eps:
+            A[i] /= a
+    for r in range(m):
+        for c in range(r + 1, m):
+            A[r] -= A[r, c] * A[c]
+    invR = A[:, m:]
+    return invR @ Q.T
 
 def fit_linear(X, y):
     X = tensor(X)
@@ -366,7 +353,7 @@ def eye(m, n=None):
     array = [0] * m * n
     for i in range(m):
         if i >= n: break
-        array[i * m + i] = 1
+        array[i * n + i] = 1
     return Tensor(array, shape=(m, n))
 
 def make_householder(a):
