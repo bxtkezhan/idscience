@@ -173,7 +173,7 @@ def betainc(z, a, b, regularized=False, num_simulations=100, eps=1e-7):
     if _math.isclose(z, 0): return 0.
     if _math.isclose(z, 1): return 1.
     if _math.isclose(b, 1): return z**a
-    if _math.isclose(a, 1): return 1 - (1 - x)**b
+    if _math.isclose(a, 1): return 1 - (1 - z)**b
 
     C = z**a
     k = 1
