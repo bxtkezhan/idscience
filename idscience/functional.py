@@ -4,145 +4,146 @@ import bisect as _bisect
 import math as _math
 import cmath as _cmath
 import builtins as _builtins
+import operator as _operator
 
 from idscience import Tensor, tensor, zeros_like, vstack, random, concatenate
 
 
 def ceil(x):
-    return Tensor.map_tensor(x, _math.ceil)
+    return Tensor.map(x, _math.ceil)
 
 def copysign(x, y):
-    return Tensor.map_tensor2tensor(x, y, _math.copysign)
+    return Tensor.map2(x, y, _math.copysign)
 
 def fabs(x):
-    return Tensor.map_tensor(x, _math.fabs)
+    return Tensor.map(x, _math.fabs)
 
 def factorial(x):
-    return Tensor.map_tensor(x, _math.factorial)
+    return Tensor.map(x, _math.factorial)
 
 def floor(x):
-    return Tensor.map_tensor(x, _math.floor)
+    return Tensor.map(x, _math.floor)
 
 def fmod(x, y):
-    return Tensor.map_tensor2tensor(x, y, _math.fmod)
+    return Tensor.map2(x, y, _math.fmod)
 
 def frexp(x):
-    return Tensor.map_tensor(x, _math.frexp)
+    return Tensor.map(x, _math.frexp)
 
 def gcd(a, b):
-    return Tensor.map_tensor2tensor(a, b, _math.gcd)
+    return Tensor.map2(a, b, _math.gcd)
 
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
     _isclose = lambda a, b: _math.isclose(a, b, rel_tol=1e-09, abs_tol=0.0)
-    return Tensor.map_tensor2tensor(a, b, _isclose)
+    return Tensor.map2(a, b, _isclose)
 
 def isfinite(x):
-    return Tensor.map_tensor(x, _math.isfinite)
+    return Tensor.map(x, _math.isfinite)
 
 def isinf(x):
-    return Tensor.map_tensor(x, _math.isinf)
+    return Tensor.map(x, _math.isinf)
 
 def isnan(x):
-    return Tensor.map_tensor(x, _math.isnan)
+    return Tensor.map(x, _math.isnan)
 
 def ldexp(x, i):
-    return Tensor.map_tensor2tensor(x, i, _math.ldexp)
+    return Tensor.map2(x, i, _math.ldexp)
 
 def modf(x):
-    return Tensor.map_tensor(x, _math.modf)
+    return Tensor.map(x, _math.modf)
 
 def remainder(x, y):
-    return Tensor.map_tensor2tensor(x, y)
+    return Tensor.map2(x, y)
 
 def trunc(x):
-    return Tensor.map_tensor(x, _math.trunc)
+    return Tensor.map(x, _math.trunc)
 
 def exp(x):
-    return Tensor.map_tensor(x, _math.exp)
+    return Tensor.map(x, _math.exp)
 
 def expm1(x):
-    return Tensor.map_tensor(x, _math.expm1)
+    return Tensor.map(x, _math.expm1)
 
 def log(x, base):
-    return Tensor.map_tensor2tensor(x, base, _math.log)
+    return Tensor.map2(x, base, _math.log)
 
 def log1p(x):
-    return Tensor.map_tensor(x, _math.log1p)
+    return Tensor.map(x, _math.log1p)
 
 def log2(x):
-    return Tensor.map_tensor(x, _math.log2)
+    return Tensor.map(x, _math.log2)
 
 def log10(x):
-    return Tensor.map_tensor(x, _math.log10)
+    return Tensor.map(x, _math.log10)
 
 def pow(x, y):
-    return Tensor.map_tensor2tensor(x, y, _math.pow)
+    return Tensor.map2(x, y, _math.pow)
 
 def square(x):
     return pow(x, 2)
 
 def sqrt(x):
-    return Tensor.map_tensor(x, _math.sqrt)
+    return Tensor.map(x, _math.sqrt)
 
 def acos(x):
-    return Tensor.map_tensor(x, _math.acos)
+    return Tensor.map(x, _math.acos)
 
 def asin(x):
-    return Tensor.map_tensor(x, _math.asin)
+    return Tensor.map(x, _math.asin)
 
 def atan(x):
-    return Tensor.map_tensor(x, _math.atan)
+    return Tensor.map(x, _math.atan)
 
 def atan2(x, y):
-    return Tensor.map_tensor2tensor(x, y, _math.atan2)
+    return Tensor.map2(x, y, _math.atan2)
 
 def cos(x):
-    return Tensor.map_tensor(x, _math.cos)
+    return Tensor.map(x, _math.cos)
 
 def hypot(x, y):
-    return Tensor.map_tensor2tensor(x, y, _math.hypot)
+    return Tensor.map2(x, y, _math.hypot)
 
 def sin(x):
-    return Tensor.map_tensor(x, _math.sin)
+    return Tensor.map(x, _math.sin)
 
 def tan(x):
-    return Tensor.map_tensor(x, _math.tan)
+    return Tensor.map(x, _math.tan)
 
 def degrees(x):
-    return Tensor.map_tensor(x, _math.degrees)
+    return Tensor.map(x, _math.degrees)
 
 def radians(x):
-    return Tensor.map_tensor(x, _math.radians)
+    return Tensor.map(x, _math.radians)
 
 def acosh(x):
-    return Tensor.map_tensor(x, _math.acosh)
+    return Tensor.map(x, _math.acosh)
 
 def asinh(x):
-    return Tensor.map_tensor(x, _math.asinh)
+    return Tensor.map(x, _math.asinh)
 
 def atanh(x):
-    return Tensor.map_tensor(x, _math.atanh)
+    return Tensor.map(x, _math.atanh)
 
 def cosh(x):
-    return Tensor.map_tensor(x, _math.cosh)
+    return Tensor.map(x, _math.cosh)
 
 def sinh(x):
-    return Tensor.map_tensor(x, _math.sinh)
+    return Tensor.map(x, _math.sinh)
 
 def tanh(x):
-    return Tensor.map_tensor(x, _math.tanh)
+    return Tensor.map(x, _math.tanh)
 
 def erf(x):
-    return Tensor.map_tensor(x, _math.erf)
+    return Tensor.map(x, _math.erf)
 
 def erfc(x):
-    return Tensor.map_tensor(x, _math.erfc)
+    return Tensor.map(x, _math.erfc)
 
 def gamma(x):
-    return Tensor.map_tensor(x, _math.gamma)
+    return Tensor.map(x, _math.gamma)
 
 def lgamma(x):
-    return Tensor.map_tensor(x, _math.lgamma)
+    return Tensor.map(x, _math.lgamma)
 
 pi = _math.pi
 e = _math.e
@@ -151,7 +152,7 @@ inf = _math.inf
 nan = _math.nan
 
 def round(x, ndigits=None):
-    return Tensor.map_tensor2tensor(x, ndigits, _builtins.round)
+    return Tensor.map2(x, ndigits, _builtins.round)
 
 def sample(x, weights=None, *, cum_weights=None, size=1):
     random = _random.random
@@ -170,10 +171,11 @@ def sample(x, weights=None, *, cum_weights=None, size=1):
     return [x[bisect(cum_weights, random() * total)] for i in range(size)]
 
 def betainc(z, a, b, regularized=False, num_simulations=100, eps=1e-7):
-    if _math.isclose(z, 0): return 0.
-    if _math.isclose(z, 1): return 1.
-    if _math.isclose(b, 1): return z**a
-    if _math.isclose(a, 1): return 1 - (1 - z)**b
+    if regularized:
+        if _math.isclose(z, 0): return 0.
+        if _math.isclose(z, 1): return 1.
+        if _math.isclose(b, 1): return z**a
+        if _math.isclose(a, 1): return 1 - (1 - z)**b
 
     C = z**a
     k = 1
@@ -190,8 +192,8 @@ def betainc(z, a, b, regularized=False, num_simulations=100, eps=1e-7):
         den = ni * (a + k)
         bei_ = bei
         bei += num / den
-        error = abs(bei - bei_)
         k += 1
+        error = abs(bei - bei_)
 
     if not regularized:
         return C * bei
@@ -233,7 +235,6 @@ def t_test(x, y=None, mu=None):
 
 def gammainc(s, z, regularized=False, num_simulations=100, eps=1e-7):
     C = z**s * _math.exp(-z)
-    if _math.isclose(C, 0): return 0.
     k = 0
     num = 1 / z
     den = 1
@@ -244,11 +245,15 @@ def gammainc(s, z, regularized=False, num_simulations=100, eps=1e-7):
         den *= s + k
         gai_ = gai
         gai += num / den
-        error = abs(gai - gai_)
         k += 1
+        error = abs(gai - gai_)
+    if _math.isclose(C, 0) and _math.isinf(gai):
+        gai = 1.
+    else:
+        gai = C * gai
     if not regularized:
-        return C * gai
-    return C * gai / _math.gamma(s)
+        return gai
+    return gai / _math.gamma(s)
 
 def chisq_test(x, correct=True):
     def chi2_uniform_distance(table):
@@ -305,12 +310,12 @@ def matrix_inv(A, eps=1e-7):
     invR = A[:, m:]
     return invR @ Q.T
 
-def fit_linear(X, y):
-    X = tensor(X)
-    y = tensor(y)
-    X_T = X.T
-    Beta = matrix_inv(X_T @ X) @ X_T @ y
-    return Beta
+def fit_linear(A, b):
+    A = tensor(A)
+    b = tensor(b)
+    A_T = A.T
+    x = matrix_inv(A_T @ A) @ A_T @ b
+    return x
 
 def fft(x):
     if _math.log2(len(x)) % 1 > 0:
@@ -390,15 +395,4 @@ def power_iteration(A, num_simulations=100, eps=1e-7):
     return b_k
 
 def outer(x1, x2):
-    x1 = tensor(x1)
-    x2 = tensor(x2)
-    array1 = x1._array
-    array2 = x2._array
-    m, n = len(array1), len(array2)
-    size = m * n
-    array = [0] * size
-    for i in range(size):
-        r = i // m
-        c = i % m
-        array[r * m + c] = array1[r] * array2[c]
-    return Tensor(array, shape=(m, n))
+    return Tensor.map_outer(x1, x2, _operator.mul)

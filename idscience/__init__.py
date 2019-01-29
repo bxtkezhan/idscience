@@ -3,15 +3,17 @@ reshape = Tensor.reshape
 transpose = Tensor.transpose
 tolist = Tensor.tolist
 item = Tensor.item
-map_tensor = Tensor.map_tensor
-map_tensor2tensor = Tensor.map_tensor2tensor
+map = Tensor.map
+map2 = Tensor.map2
+map_outer = Tensor.map_outer
 matmul = Tensor.matmul
-reduce_tensor = Tensor.reduce_tensor
+reduce = Tensor.reduce
 sum = Tensor.sum
 mean = Tensor.mean
 std = Tensor.std
 min = Tensor.min
 max = Tensor.max
+clip = Tensor.clip
 
 from idscience.tensor import tensor, zeros, zeros_like, ones, ones_like, fill, arange
 from idscience.tensor import randrange, randint, choice, random, uniform, triangular
