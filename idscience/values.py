@@ -17,5 +17,3 @@ class Null:
     __eq__ = __lt__
     __ge__ = __lt__
     __gt__ = __lt__
-
-null = Null()

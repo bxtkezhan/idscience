@@ -14,6 +14,8 @@ std = Tensor.std
 min = Tensor.min
 max = Tensor.max
 clip = Tensor.clip
+argmax = Tensor.argmax
+argmin = Tensor.argmin
 
 from idscience.tensor import tensor, zeros, zeros_like, ones, ones_like, fill, arange
 from idscience.tensor import randrange, randint, choice, random, uniform, triangular

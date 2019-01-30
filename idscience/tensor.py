@@ -3,7 +3,7 @@ from functools import reduce
 import operator
 import random as _random
 
-from idscience.values import InterChars, null
+from idscience.values import InterChars, Null
 
 
 class Tensor:
@@ -429,6 +429,7 @@ class Tensor:
             dst_shape = list(shape)
             for i in axis:
                 dst_shape[i] = 1
+            null = Null()
             dst_array = [null] * reduce(operator.mul, dst_shape)
 
             bases = [reduce(operator.mul, shape[i + 1:]) for i in range(len(shape) - 1)] + [1]
@@ -486,6 +487,44 @@ class Tensor:
             raise ValueError('tensor_clip: must set either max or min')
         x = Tensor.map(x, func)
         return x
+
+    def argmax(x, axis=0):
+        x = tensor(x)
+        if not isinstance(axis, int):
+            raise TypeError('{} object cannot be interpreted as an integer'.format(axis.__class__))
+        reduce_size = x.shape[axis]
+        def func(a, b):
+            if isinstance(a, Null):
+                return [1, 0, b] # counter, index, value
+            else:
+                counter = a[0] + 1
+                a[0] = counter
+                if b > a[2]:
+                    a[1] = counter - 1
+                    a[2] = b
+                if counter < reduce_size:
+                    return a
+                return a[1]
+        return Tensor.reduce(x, func, axis=axis)
+
+    def argmin(x, axis=0):
+        x = tensor(x)
+        if not isinstance(axis, int):
+            raise TypeError('{} object cannot be interpreted as an integer'.format(axis.__class__))
+        reduce_size = x.shape[axis]
+        def func(a, b):
+            if isinstance(a, Null):
+                return [1, 0, b] # counter, index, value
+            else:
+                counter = a[0] + 1
+                a[0] = counter
+                if b < a[2]:
+                    a[1] = counter - 1
+                    a[2] = b
+                if counter < reduce_size:
+                    return a
+                return a[1]
+        return Tensor.reduce(x, func, axis=axis)
 
 def value_shape(value):
     if not isinstance(value, Iterable)  or isinstance(value, str):
