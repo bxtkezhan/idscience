@@ -1,6 +1,7 @@
 from collections import Iterable
 from functools import reduce
 import operator
+import math
 import random as _random
 
 from idscience.values import InterChars, Null
@@ -25,7 +26,7 @@ class Tensor:
         return self._shape
 
     def reshape(x, *shape):
-        x = tensor(x)
+        x = _tensor(x)
         axes = [i for i, num in enumerate(shape) if (num == -1 or num is None)]
         if len(axes) > 1:
             raise ValueError('can only specify one unknown dimension')
@@ -39,7 +40,7 @@ class Tensor:
         return Tensor(array, shape)
 
     def transpose(x, *axes):
-        x = tensor(x)
+        x = _tensor(x)
         if len(axes) != len(x.shape):
             raise ValueError("axes don't match tensor")
         if len(set(axes)) != len(axes):
@@ -113,7 +114,7 @@ class Tensor:
 
     def __setitem__(self, idxs, value):
         idxs, _ = Tensor.recursion_element(range(self.size), self._shape, idxs)
-        value = tensor(value)
+        value = _tensor(value)
         value_size = value.size
         for i, idx in enumerate(idxs):
             self._array[idx] = value._array[i % value_size]
@@ -133,7 +134,7 @@ class Tensor:
             raise StopIteration
 
     def tolist(x):
-        x = tensor(x)
+        x = _tensor(x)
         if len(x.shape) == 0:
             return x._array[:]
         def recursion_items(array, shape):
@@ -149,7 +150,7 @@ class Tensor:
         return recursion_items(x._array, x.shape)
 
     def item(x):
-        x = tensor(x)
+        x = _tensor(x)
         if x.size != 1:
             raise ValueError('can only convert an array of size 1 to a Python scalar')
         return x._array[0]
@@ -236,7 +237,7 @@ class Tensor:
             return 'tensor(\n{}, shape: {})'.format(self, self.shape)
 
     def map(x, func):
-        x = tensor(x)
+        x = _tensor(x)
         array = [0] * x.size
         shape = x.shape
         for i, value in enumerate(x._array):
@@ -245,8 +246,8 @@ class Tensor:
         return Tensor(array, shape)
 
     def map2(x1, x2, func):
-        x1 = tensor(x1)
-        x2 = tensor(x2)
+        x1 = _tensor(x1)
+        x2 = _tensor(x2)
 
         shape1 = x1.shape
         m = x1.size
@@ -256,22 +257,18 @@ class Tensor:
             raise ValueError(
                     'operands could not be broadcast together with shapes {} {}'.format(shape1, shape2))
         l = max(m, n)
-        array1 = x1._array
-        array2 = x2._array
+        array1 = x1._array if m >= l else x1._array * math.ceil(l / m)
+        array2 = x2._array if n >= l else x2._array * math.ceil(l / n)
         array = [0] * l
         shape = shape1 if m > n or (m == n and len(shape1) > len(shape2)) else shape2
-        k1 = 0
-        k2 = 0
         for i in range(l):
-            array[i] = func(array1[k1], array2[k2])
-            k1 = (k1 + 1) % m
-            k2 = (k2 + 1) % n
+            array[i] = func(array1[i], array2[i])
         if len(shape) == 0: return array[0]
         return Tensor(array, shape)
 
     def map_outer(x1, x2, func):
-        x1 = tensor(x1)
-        x2 = tensor(x2)
+        x1 = _tensor(x1)
+        x2 = _tensor(x2)
         array1 = x1._array
         array2 = x2._array
         m, n = len(array1), len(array2)
@@ -284,8 +281,8 @@ class Tensor:
         return Tensor(array, shape=(m, n))
 
     def matmul(x1, x2):
-        x1 = tensor(x1)
-        x2 = tensor(x2)
+        x1 = _tensor(x1)
+        x2 = _tensor(x2)
         if len(x1.shape) == 0 or len(x2.shape) == 0:
             raise ValueError("Scalar operands are not allowed, use '*' instead")
 
@@ -392,7 +389,7 @@ class Tensor:
     __imatmul__ = lambda x1, x2: Tensor.matmul(x1, x2)
 
     def __contains__(self, x):
-        x = tensor(x)
+        x = _tensor(x)
         size1 = self.size
         size2 = x.size
         if size1 < size2 or size1 % size2 != 0:
@@ -406,7 +403,7 @@ class Tensor:
         return False
 
     def reduce(x, func, axis=None, keepdims=False):
-        x = tensor(x)
+        x = _tensor(x)
         dst_shape = None
         dst_array = None
         if axis is None:
@@ -489,7 +486,7 @@ class Tensor:
         return x
 
     def argmax(x, axis=0):
-        x = tensor(x)
+        x = _tensor(x)
         if not isinstance(axis, int):
             raise TypeError('{} object cannot be interpreted as an integer'.format(axis.__class__))
         reduce_size = x.shape[axis]
@@ -508,7 +505,7 @@ class Tensor:
         return Tensor.reduce(x, func, axis=axis)
 
     def argmin(x, axis=0):
-        x = tensor(x)
+        x = _tensor(x)
         if not isinstance(axis, int):
             raise TypeError('{} object cannot be interpreted as an integer'.format(axis.__class__))
         reduce_size = x.shape[axis]
@@ -540,6 +537,13 @@ def value_flatten(value, shape):
         value = reduce(operator.iconcat, value, [])
     return value
 
+def _tensor(value):
+    if isinstance(value, Tensor):
+        return value
+    shape = value_shape(value)
+    array = value_flatten(value, shape)
+    return Tensor(array, shape)
+
 def tensor(value):
     if isinstance(value, Tensor):
         shape = value.shape
@@ -570,7 +574,7 @@ def fill(value, shape):
 def arange(start, stop=None, step=1):
     if stop is None:
         return tensor(range(0, start, step))
-    return tensor(range(start, stop, step))
+    return _tensor(range(start, stop, step))
 
 def randrange(start, stop=None, step=1, shape=None):
     size = reduce(operator.mul, shape) if shape else 1
@@ -682,7 +686,7 @@ def concatenate(xs, axis=0):
     first_shape = None
     after_shape = None
     for i, x in enumerate(xs):
-        xs[i] = tensor(x)
+        xs[i] = _tensor(x)
         if i == 0:
             dims = len(x.shape)
             first_shape = x.shape[:axis]
